@@ -1,8 +1,6 @@
 package app;
 
-import domain.Product;
-import domain.Roles;
-import domain.User;
+import domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.Scanner;
 public class ECommerceApp extends Application {
     @Override
     public void start() {
-        users.add(new User(1, "ADMIN", "admin@gmail.com", "123", Roles.ADMIN));
+        users.add(new Admin(1,"ADMIN","test@gmail.com","123"));
 
         while (true) {
             printMainMenu();
@@ -39,6 +37,7 @@ public class ECommerceApp extends Application {
     private static List<Product> products = new ArrayList<>();
     private static List<String> cart = new ArrayList<>();
     private static List<String> orders = new ArrayList<>();
+    private static User currentUser;
 
     private static void printMainMenu() {
         System.out.println("\n===== E-COMMERCE PLATFORM =====");
@@ -60,7 +59,7 @@ public class ECommerceApp extends Application {
                 .max()
                 .orElse(0) + 1;
 
-        users.add(new User(nextId, username, password, email, Roles.CUSTOMER));
+        users.add(new Customer(nextId,username,email,password));
         System.out.println(username + " Uğurla qeydiyyatdan keçdiniz!");
     }
 
@@ -73,7 +72,10 @@ public class ECommerceApp extends Application {
         for (User user : users) {
             if (user.getName().equals(username) && user.authenticate(password)) {
                 System.out.println("Giriş uğurludur! Xoş gəldiniz, " + username);
-                if (user.getRole() == Roles.ADMIN) {
+
+                currentUser = user;
+
+                if (currentUser instanceof Admin) {
                     adminMenu();
                 } else {
                     customerMenu();
@@ -118,6 +120,7 @@ public class ECommerceApp extends Application {
                     break;
                 case 7:
                     System.out.println("Hesabdan çıxıldı.");
+                    currentUser = null;
                     return;
                 default:
                     System.out.println("Yanlış seçim!");

@@ -2,27 +2,21 @@ package domain;
 
 import java.util.Objects;
 
-public class User {
-    private int id;
+public abstract class User {
+    private final int id;
     private String name;
     private String email;
     private String password;
-    private final Roles role;
 
-    public User(int id, String name, String email, String password, Roles role) {
+    public User(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -41,9 +35,6 @@ public class User {
         this.email = email;
     }
 
-    public Roles getRole() {
-        return role;
-    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
