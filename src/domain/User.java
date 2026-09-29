@@ -41,6 +41,9 @@ public class User {
         this.email = email;
     }
 
+    public Roles getRole() {
+        return role;
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -51,5 +54,9 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public boolean authenticate(String inputPassword) {
+        return this.password.equals(inputPassword);
     }
 }
