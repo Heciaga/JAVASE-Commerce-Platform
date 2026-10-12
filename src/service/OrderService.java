@@ -13,12 +13,15 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public void checkout(Customer customer) {
+    public Order checkout(Customer customer) {
         if (customer == null) {
             throw new IllegalArgumentException("Customer is null");
         }
+        if (customer.getCart() == null) {
+            throw new IllegalArgumentException("Customer cart is null");
+        }
         if (customer.getCart().getItems().isEmpty()) {
-            throw new IllegalArgumentException("Cart is null");
+            throw new IllegalArgumentException("Cart is empty");
         }
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -27,9 +30,17 @@ public class OrderService {
                     , cartItem.getQuantity()
                     , cartItem.getProduct().getPrice()));
         }
+        Order order = new Order(orderRepository.nextId(), customer, orderItems, OrderStatus.PENDING);
 
-        orderRepository.save(new Order(orderRepository.nextId(), customer, orderItems, OrderStatus.PENDING));
+        orderRepository.save(order);
         customer.getCart().clear();
+        return order;
+    }
+
+    public List<Order> getCustomerOrders(Customer customer) {
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer is null");
+        }
 
     }
 }

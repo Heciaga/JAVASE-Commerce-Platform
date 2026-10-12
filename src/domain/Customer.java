@@ -10,7 +10,6 @@ public class Customer extends User {
         this.cart = new Cart(new ArrayList<>());
     }
 
-    @Override
     public Cart getCart() {
         return cart;
     }
